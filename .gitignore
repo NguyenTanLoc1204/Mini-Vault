@@ -13,7 +13,7 @@ __pycache__/
 *.sqlite3
 data/*.db
 
-# IDE & Editor files
-.vscode/
-.idea/
-*.swp
+# Virtual Environment
+venv/
+.venv/
+env/
