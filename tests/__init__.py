@@ -1,0 +1,3 @@
+"""
+Mini Vault Test Suite
+"""
