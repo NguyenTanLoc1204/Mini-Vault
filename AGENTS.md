@@ -49,13 +49,14 @@ This document provides project context, architecture guidelines, and operational
 
 - **Run Tests**:
   ```bash
-  python3 -m unittest discover tests
+  ./venv/bin/python -m unittest discover tests
   # Or target specific module test:
-  python3 -m unittest tests/test_storage.py
+  ./venv/bin/python -m unittest tests/test_storage.py
+  ./venv/bin/python -m unittest tests/test_core.py
   ```
 - **Run Application**:
   ```bash
-  python3 main.py
+  ./venv/bin/python main.py
   ```
 
 ---
