@@ -209,6 +209,43 @@ class TestCoreCryptoAndVault(unittest.TestCase):
         self.assertNotIn(dek, encrypted_dek_b64.encode())
         self.assertNotIn(dek.hex(), encrypted_dek_b64)
 
+    # ------------------------------------------------------------------
+    # 8. Physical Disk DB File Interaction Test
+    # ------------------------------------------------------------------
+    def test_physical_file_database_interaction(self):
+        test_db_path = os.path.join("data", "test_vault_integration.db")
+        if os.path.exists(test_db_path):
+            os.remove(test_db_path)
+
+        try:
+            # 1. Create file-backed DB and VaultManager
+            db1 = VaultDatabase(test_db_path)
+            vault1 = VaultManager(db1)
+
+            # 2. Init Vault
+            vault1.init_vault(self.passphrase)
+            dek_orig = vault1.get_dek()
+            self.assertTrue(vault1.is_unlocked)
+            db1.close()
+
+            # 3. Simulate process restart by creating new instance on same file
+            db2 = VaultDatabase(test_db_path)
+            vault2 = VaultManager(db2)
+
+            # Auto-sync must reset status to locked
+            self.assertFalse(vault2.is_unlocked)
+            self.assertEqual(db2.get_vault_config()["status"], "locked")
+
+            # 4. Unlock with correct passphrase
+            vault2.unlock_vault(self.passphrase)
+            self.assertTrue(vault2.is_unlocked)
+            self.assertEqual(vault2.get_dek(), dek_orig)
+            db2.close()
+
+        finally:
+            if os.path.exists(test_db_path):
+                os.remove(test_db_path)
+
 
 if __name__ == "__main__":
     unittest.main()
