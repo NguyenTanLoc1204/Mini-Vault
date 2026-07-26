@@ -53,6 +53,7 @@ This document provides project context, architecture guidelines, and operational
   # Or target specific module test:
   ./venv/bin/python -m unittest tests/test_storage.py
   ./venv/bin/python -m unittest tests/test_core.py
+  ./venv/bin/python -m unittest tests/test_auth.py
   ```
 - **Run Application**:
   ```bash
