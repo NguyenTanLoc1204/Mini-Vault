@@ -55,5 +55,5 @@ cp .env.example .env
 - [x] **Core Storage Engine (`src/storage/`)**: SQLite database engine (`db.py`) executing `schema.sql` (`vault_config`, `users`, `kv_secrets`, `transit_keys`, `audit_logs`).
 - [x] **Feature 0.1 Vault Init & Unlock (`src/core/`)**: Argon2id KDF key derivation ($m=64\text{MB}, t=3, p=4$), AES-256-GCM DEK envelope encryption, and in-memory key isolation.
 - [x] **Feature 0.2 User Authentication (`src/auth/`)**: User registration, Bcrypt hashing, 256-bit session tokens (30-min TTL), and mandatory 5-fail 5-min account lockout.
-- [ ] **Feature 1 Secure Storage (`src/kv/`)**: AEAD encrypted-at-rest secrets & path-based ownership ACL.
+- [x] **Feature 1 Secure Storage (`src/kv/`)**: AEAD AES-256-GCM encrypted-at-rest secrets & path-based ownership ACL (`secret/<owner_email>/...`).
 - [ ] **Feature 2 Transit Engine (`src/transit/`)**: Named key management, Encrypt/Decrypt API, Sign & Verify API.

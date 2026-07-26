@@ -54,6 +54,7 @@ This document provides project context, architecture guidelines, and operational
   ./venv/bin/python -m unittest tests/test_storage.py
   ./venv/bin/python -m unittest tests/test_core.py
   ./venv/bin/python -m unittest tests/test_auth.py
+  ./venv/bin/python -m unittest tests/test_kv.py
   ```
 - **Run Application**:
   ```bash
