@@ -266,6 +266,14 @@ class TransitEngine:
         self.vault_manager.require_unlocked()
         dek = self.vault_manager.get_dek()
 
+        # check duplicate key
+        existing = self.db.get_transit_key(clean_name)
+        if existing:
+            if existing["owner_id"] == session["user_id"]:
+                raise ValueError(f"Named key '{clean_name}' already exists.")
+            else:
+                # Disclose generic permission error if owned by someone else
+                raise TransitKeyAccessDeniedError()
         # Generate key pair
         if algo == "ED25519":
             priv_key = ed25519.Ed25519PrivateKey.generate()
