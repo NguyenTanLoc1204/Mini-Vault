@@ -205,6 +205,9 @@ class KVEngine:
         """
         # 1. Enforce ACL
         clean_path, session = self._enforce_path_access(path, token, action="DELETE")
+        
+        # check vault lock before
+        self.vault_manager.require_unlocked()
 
         # 2. Delete from DB
         deleted = self.db.delete_kv_secret(clean_path)

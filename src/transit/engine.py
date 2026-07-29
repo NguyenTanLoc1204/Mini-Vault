@@ -152,12 +152,20 @@ class TransitEngine:
 
     def list_keys(self, token: str) -> List[Dict[str, Any]]:
         """List all named keys owned by caller (never exposing key material)."""
-        session = self.auth_manager.verify_session(token)
+        session = self.auth_manager.verify_session(token) 
+       
+        # check vault lock
+        self.vault_manager.require_unlocked()
+
         return self.db.list_transit_keys(session["user_id"])
 
     def revoke_key(self, key_name: str, token: str) -> bool:
         """Permanently delete a named key."""
         key_record, session = self._enforce_key_access(key_name, token, action="DELETE")
+        
+        # check vault lock before
+        self.vault_manager.require_unlocked()
+
         return self.db.delete_transit_key(key_record["key_name"])
 
     # ==================================================================
@@ -390,6 +398,9 @@ class TransitEngine:
         # Verification requires valid session token & caller authorization
         key_record, session = self._enforce_key_access(key_name, token, action="VERIFY")
 
+        # check vault lock before
+        self.vault_manager.require_unlocked()
+        
         if key_record["key_usage"] != "SIGN_VERIFY":
             raise InvalidKeyUsageError("Key usage is ENCRYPT_DECRYPT, not SIGN_VERIFY.")
 

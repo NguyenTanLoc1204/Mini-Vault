@@ -7,6 +7,7 @@ import base64
 import getpass
 import json
 import os
+import io
 import sys
 from typing import Optional, Dict, Any
 
